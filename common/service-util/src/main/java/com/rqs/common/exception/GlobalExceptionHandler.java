@@ -22,4 +22,5 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
         return Result.fail().message("执行了特定异常处理");
     }
+
 }
