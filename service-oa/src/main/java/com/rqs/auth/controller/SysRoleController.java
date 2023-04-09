@@ -38,11 +38,11 @@ public class SysRoleController {
     @GetMapping("/findAll")
     public Result findAll() {
         List<SysRole> list = sysRoleService.list();
-        try {
-            int a = 10/0;
-        }catch(Exception e) {
-            throw new RqsException(20001,"出现自定义异常");
-        }
+//        try {
+//            int a = 10/0;
+//        }catch(Exception e) {
+//            throw new RqsException(20001,"出现自定义异常");
+//        }
         return Result.ok(list);
     }
 
