@@ -23,4 +23,11 @@ public class GlobalExceptionHandler {
         return Result.fail().message("执行了特定异常处理");
     }
 
+    //处理自定义异常，执行的方法
+    @ExceptionHandler(RqsException.class)
+    @ResponseBody
+    public Result error(RqsException e){
+        e.printStackTrace();
+        return Result.fail().message(e.getMessage()).code(e.getCode());
+    }
 }

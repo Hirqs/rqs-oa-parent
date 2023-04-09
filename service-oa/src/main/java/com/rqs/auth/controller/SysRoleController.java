@@ -3,6 +3,7 @@ package com.rqs.auth.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rqs.auth.service.SysRoleService;
+import com.rqs.common.exception.RqsException;
 import com.rqs.common.result.Result;
 import com.rqs.model.system.SysRole;
 import com.rqs.vo.system.SysRoleQueryVo;
@@ -37,6 +38,11 @@ public class SysRoleController {
     @GetMapping("/findAll")
     public Result findAll() {
         List<SysRole> list = sysRoleService.list();
+        try {
+            int a = 10/0;
+        }catch(Exception e) {
+            throw new RqsException(20001,"出现自定义异常");
+        }
         return Result.ok(list);
     }
 
