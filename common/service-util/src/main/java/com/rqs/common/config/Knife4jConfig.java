@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * knife4j配置信息
+ * knife4j配置信息,访问网址：
+ * http://localhost:8800/doc.html
  */
 @Configuration
 @EnableSwagger2WebMvc
