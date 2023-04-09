@@ -10,10 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class SysRoleController {
         //调用service中的方法实现分页
         // 1.创建Page对象，传递分页相关参数
         Page<SysRole> pageParam = new Page<>(page, limit);
-        // 2.封装条件，判断条件是否为空，不为空则进行封装
+        // 2.封装条件前，判断条件是否为空，不为空则进行封装
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
         String roleName = sysRoleQueryVo.getRoleName();
         if (!StringUtils.isEmpty(roleName)) {
@@ -68,5 +65,54 @@ public class SysRoleController {
         return Result.ok(pageResult);
     }
 
+    @ApiOperation("添加角色")
+    @PostMapping("save")//get请求没有请求体,只有请求行,请求头。
+    public Result addSysRole(@RequestBody SysRole sysRole) {//前端用json对象格式传入数据，例如：{"description": "test","roleCode": "test","roleName": "测试"}。后端用java对象接收。
+        boolean is_success = sysRoleService.save(sysRole);
+        if (is_success) {
+            return Result.ok();
+        }
+        return Result.fail();
+    }
+
+    //修改角色步骤，1.根据id查询角色 2.修改角色
+    @ApiOperation("根据id查询角色")
+    @GetMapping("get/{id}")
+    public Result getId(@PathVariable long id) {
+        SysRole sysRole = sysRoleService.getById(id);
+        return Result.ok(sysRole);
+    }
+    @ApiOperation("修改角色")
+    @PutMapping("update")
+    public Result update(@RequestBody SysRole sysRole) {
+        boolean is_success = sysRoleService.updateById(sysRole);
+        if (is_success) {
+            return Result.ok();
+        }
+        return Result.fail();
+    }
+
+    //根据id删除
+    @ApiOperation("根据id删除角色")
+    @DeleteMapping("remove/{id}")
+    public Result removeSysRoleById(@PathVariable long id) {
+        boolean is_success = sysRoleService.removeById(id);
+        if (is_success) {
+            return Result.ok();
+        }
+        return Result.fail();
+    }
+
+    //批量删除。同样是根据id删除，只不过是传入多个id，例如前端传入json数组格式的id [1,2,3]，后端用List集合的请求体得到前端传入的数组。
+    //小知识：json的对象格式会转换为java对象，json的数组格式会转化为java的list集合
+    @ApiOperation("批量删除角色")
+    @DeleteMapping("batchRemove")
+    public Result batchRomoveSysRole(@RequestBody List<Long> idList) {
+        boolean is_success = sysRoleService.removeByIds(idList);
+        if (is_success) {
+            return Result.ok();
+        }
+        return Result.fail();
+    }
 
 }
