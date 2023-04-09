@@ -10,7 +10,8 @@ public class GlobalExceptionHandler {
     //全局异常处理，执行的方法
     @ExceptionHandler(Exception.class)
     @ResponseBody//@ResponseBody的作用其实是将java对象转为json格式的数据。
-    public Result error() {
+    public Result error(Exception e) {
+        e.printStackTrace();
         return Result.fail().message("执行全局异常处理...");
     }
 }
