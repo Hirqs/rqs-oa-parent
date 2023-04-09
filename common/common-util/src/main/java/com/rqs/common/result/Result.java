@@ -9,13 +9,14 @@ import lombok.Data;
 @Data
 public class Result<T> {
 
-    private Integer code;//状态码
-    private String message;//返回消息
-    private T data;//返回数据
+    private Integer code;//操作的状态码
+    private String message;//返回的信息
+    private T data;//返回的具体数据
 
-    public Result(){}
+    //构造私有化，操作该类中的数据需要提供对外可以调用的静态方法
+    private Result(){}
 
-    // 返回数据
+    // 封装返回的具体数据
     protected static <T> Result<T> build(T data) {
         Result<T> result = new Result<T>();
         if (data != null)
@@ -23,55 +24,43 @@ public class Result<T> {
         return result;
     }
 
-    public static <T> Result<T> build(Integer code  , T data, String message) {
-        Result<T> result = build(data);
-        result.setCode(code);
-        result.setMessage(message);
-        return result;
-    }
-
+    //封装返回状态码和信息
     public static <T> Result<T> build(T data, ResultCodeEnum resultCodeEnum) {
         Result<T> result = build(data);
+        //操作的状态码
         result.setCode(resultCodeEnum.getCode());
+        //返回的信息
         result.setMessage(resultCodeEnum.getMessage());
         return result;
     }
 
+    //操作成功，无返回数据
     public static<T> Result<T> ok(){
-        return Result.ok(null);
+        return build(null,ResultCodeEnum.SUCCESS);
     }
 
-    /**
-     * 操作成功
-     * @param data  baseCategory1List
-     * @param <T>
-     * @return
-     */
+    //操作成功，有返回数据
     public static<T> Result<T> ok(T data){
-        Result<T> result = build(data);
         return build(data, ResultCodeEnum.SUCCESS);
     }
 
+    //操作失败，无返回数据
     public static<T> Result<T> fail(){
-        return Result.fail(null);
+        return build(null,ResultCodeEnum.FAIL);
     }
 
-    /**
-     * 操作失败
-     * @param data
-     * @param <T>
-     * @return
-     */
+    //操作失败，有返回数据
     public static<T> Result<T> fail(T data){
-        Result<T> result = build(data);
         return build(data, ResultCodeEnum.FAIL);
     }
 
+    //重新设置返回的信息
     public Result<T> message(String msg){
         this.setMessage(msg);
         return this;
     }
 
+    //重新设置返回的状态码
     public Result<T> code(Integer code){
         this.setCode(code);
         return this;
