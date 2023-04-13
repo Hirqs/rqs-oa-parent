@@ -77,8 +77,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void doAssign(AssginRoleVo assginRoleVo) {
         //根据用户角色关系表中的用户id，把用户之前分配的角色数据删除
         LambdaQueryWrapper<SysUserRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(SysUserRole::getRoleId, assginRoleVo.getUserId());
-        boolean remove = sysUserRoleService.remove(wrapper);
+        wrapper.eq(SysUserRole::getUserId, assginRoleVo.getUserId());
+        sysUserRoleService.remove(wrapper);
         //重新进行分配
         List<Long> roleIdList = assginRoleVo.getRoleIdList();
         for (Long roleId:
