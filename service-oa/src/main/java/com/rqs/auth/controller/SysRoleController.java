@@ -6,6 +6,7 @@ import com.rqs.auth.service.SysRoleService;
 import com.rqs.common.exception.RqsException;
 import com.rqs.common.result.Result;
 import com.rqs.model.system.SysRole;
+import com.rqs.vo.system.AssginRoleVo;
 import com.rqs.vo.system.SysRoleQueryVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "角色管理接口")
 @RestController
@@ -119,6 +121,23 @@ public class SysRoleController {
             return Result.ok();
         }
         return Result.fail();
+    }
+
+
+    // 角色分配接口一  进入角色分配页面 1.在页面中显示所有角色 在页面中显示当前用户所属的所有角色
+    @ApiOperation(value = "根据用户id获取角色数据")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable Long userId) {
+        Map<String, Object> roleMap = sysRoleService.getRoleByUserId(userId);
+        return Result.ok(roleMap);
+    }
+
+    //角色分配接口二  保存分配的角色 2.选择想要为用户设置的角色，将用户最终选中的所有角色添加到数据库中
+    @ApiOperation(value = "为用户分配角色")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
+        sysRoleService.doAssign(assginRoleVo);
+        return Result.ok();
     }
 
 }

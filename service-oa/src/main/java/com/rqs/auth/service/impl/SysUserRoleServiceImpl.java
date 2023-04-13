@@ -1,9 +1,10 @@
 package com.rqs.auth.service.impl;
 
-import com.rqs.auth.entity.SysUserRole;
+
 import com.rqs.auth.mapper.SysUserRoleMapper;
 import com.rqs.auth.service.SysUserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.rqs.model.system.SysUserRole;
 import org.springframework.stereotype.Service;
 
 /**

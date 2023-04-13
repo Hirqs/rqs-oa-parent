@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-04-12
  */
 @RestController
-@RequestMapping("/auth/sys-user-role")
+@RequestMapping("/admin/system/sys-user-role")
 public class SysUserRoleController {
 
 }

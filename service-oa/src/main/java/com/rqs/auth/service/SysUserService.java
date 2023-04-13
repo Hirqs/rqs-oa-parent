@@ -3,6 +3,9 @@ package com.rqs.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rqs.model.system.SysUser;
+import com.rqs.vo.system.AssginRoleVo;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -14,4 +17,5 @@ import com.rqs.model.system.SysUser;
  */
 public interface SysUserService extends IService<SysUser> {
 
+    void updateStatus(Long id, Integer status);
 }

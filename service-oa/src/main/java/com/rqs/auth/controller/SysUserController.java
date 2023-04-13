@@ -6,12 +6,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rqs.auth.service.SysUserService;
 import com.rqs.common.result.Result;
 import com.rqs.model.system.SysUser;
+import com.rqs.vo.system.AssginRoleVo;
 import com.rqs.vo.system.SysUserQueryVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -84,5 +88,12 @@ public class SysUserController {
         return Result.ok();
     }
 
+    @ApiOperation(value = "更新用户状态")
+    @PutMapping("/updateStatus/{id}/{status}")
+    public Result updateStatus(@PathVariable Long id,
+                               @PathVariable Integer status) {
+        service.updateStatus(id, status);
+        return Result.ok();
+    }
 }
 
