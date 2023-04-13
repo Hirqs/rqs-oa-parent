@@ -1,9 +1,17 @@
 package com.rqs.auth.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.rqs.auth.service.SysMenuService;
+import com.rqs.common.result.Result;
+import com.rqs.model.system.SysMenu;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import sun.dc.pr.PRError;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,9 +21,41 @@ import org.springframework.web.bind.annotation.RestController;
  * @author rqs
  * @since 2023-04-13
  */
+@Api(tags="菜单管理接口")
 @RestController
-@RequestMapping("/auth/sys-menu")
+@RequestMapping("/admin/system/sysMenu")
 public class SysMenuController {
+    @Autowired
+    private SysMenuService sysMenuService;
+
+
+    @ApiOperation(value = "获取菜单")
+    @GetMapping("findNodes")
+    public Result findNodes() {
+        List<SysMenu> sysMenuList = sysMenuService.findNodes();
+        return Result.ok(sysMenuList);
+    }
+
+    @ApiOperation(value = "新增菜单")
+    @PostMapping("save")
+    public Result save(@RequestBody SysMenu permission) {
+        sysMenuService.save(permission);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "修改菜单")
+    @PutMapping("update")
+    public Result updateById(@RequestBody SysMenu permission) {
+        sysMenuService.updateById(permission);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "删除菜单")
+    @DeleteMapping("remove/{id}")
+    public Result remove(@PathVariable Long id) {
+        sysMenuService.removeById(id);
+        return Result.ok();
+    }
 
 }
 
