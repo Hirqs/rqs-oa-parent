@@ -4,6 +4,8 @@ package com.rqs.auth.controller;
 import com.rqs.auth.service.SysMenuService;
 import com.rqs.common.result.Result;
 import com.rqs.model.system.SysMenu;
+import com.rqs.vo.system.AssginMenuVo;
+import com.rqs.vo.system.AssginRoleVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import java.util.List;
  * @author rqs
  * @since 2023-04-13
  */
-@Api(tags="菜单管理接口")
+@Api(tags = "菜单管理接口")
 @RestController
 @RequestMapping("/admin/system/sysMenu")
 public class SysMenuController {
@@ -53,9 +55,22 @@ public class SysMenuController {
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable Long id) {
-        sysMenuService.removeById(id);
+        sysMenuService.removeMenuById(id);
         return Result.ok();
     }
 
+    @ApiOperation(value = "查询所有菜单和角色已分配的菜单")
+    @GetMapping("toAssign/{roleId}")
+    public Result toAssign(@PathVariable Long roleId) {
+        List<SysMenu> list = sysMenuService.findMenuByRoleId(roleId);
+        return Result.ok(list);
+    }
+
+    @ApiOperation(value = "为角色分配菜单")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginMenuVo assginMenuVo) {
+        sysMenuService.doAssign(assginMenuVo);
+        return Result.ok();
+    }
 }
 
