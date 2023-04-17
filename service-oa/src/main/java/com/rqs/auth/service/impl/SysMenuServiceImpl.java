@@ -1,10 +1,12 @@
 package com.rqs.auth.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.rqs.auth.mapper.SysMenuMapper;
 import com.rqs.auth.service.SysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rqs.auth.utils.MenuHelper;
+import com.rqs.common.exception.RqsException;
 import com.rqs.common.result.Result;
 import com.rqs.model.system.SysMenu;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
          */
         List<SysMenu> resultList = MenuHelper.buildTree(sysMenuList);
         return resultList;
+    }
+
+    @Override
+    public void removeMenuById(Long id) {
+        //判断当前菜单是否有下一层菜单
+        LambdaQueryWrapper<SysMenu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysMenu::getParentId, id);
+        Integer count = baseMapper.selectCount(wrapper);
+        if (count > 0) {
+            throw new RqsException(201, "菜单不能删除");
+        }
+        baseMapper.deleteById(id);
     }
 
 }
