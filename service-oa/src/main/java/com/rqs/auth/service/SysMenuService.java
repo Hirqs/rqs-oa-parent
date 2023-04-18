@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.rqs.model.system.SysMenu;
 import com.rqs.vo.system.AssginMenuVo;
 import com.rqs.vo.system.AssginRoleVo;
+import com.rqs.vo.system.RouterVo;
 
 import java.util.List;
 
@@ -25,4 +26,8 @@ public interface SysMenuService extends IService<SysMenu> {
     List<SysMenu> findMenuByRoleId(Long roleId);
 
     void doAssign(AssginMenuVo assginMenuVo);
+
+    List<RouterVo> finUserMenuListByUserId(Long userId);
+
+    List<String> findUserPermsByUserId(Long userId);
 }
