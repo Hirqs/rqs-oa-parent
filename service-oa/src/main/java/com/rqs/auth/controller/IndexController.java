@@ -67,7 +67,7 @@ public class IndexController {
     @GetMapping("info")
     public Result info(HttpServletRequest request) {
         //1.从请求头获取用户信息（获取请求头token字符串）
-        String token = request.getHeader("header");
+        String token = request.getHeader("token");
         //2.从token字符串中获取用户id或者用户名称
         Long userId = JwtHelper.getUserId(token);
         //3.根据用户id查询数据库，获取用户信息
