@@ -27,7 +27,7 @@ public interface SysMenuService extends IService<SysMenu> {
 
     void doAssign(AssginMenuVo assginMenuVo);
 
-    List<RouterVo> finUserMenuListByUserId(Long userId);
+    List<RouterVo> findUserMenuListByUserId(Long userId);
 
     List<String> findUserPermsByUserId(Long userId);
 }

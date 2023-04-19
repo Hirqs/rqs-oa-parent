@@ -119,7 +119,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<RouterVo> finUserMenuListByUserId(Long userId) {
+    public List<RouterVo> findUserMenuListByUserId(Long userId) {
         List<SysMenu> sysMenuList = null;
         // 1.判断当前用户是否是管理员
         if (userId.longValue() == 1) {

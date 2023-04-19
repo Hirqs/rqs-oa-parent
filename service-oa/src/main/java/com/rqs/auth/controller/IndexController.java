@@ -45,56 +45,52 @@ public class IndexController {
         //4.1 获取数据库中经过MD5加密的密码
         String password_db = sysUser.getPassword();
         //4.2 获取输入的密码
-        String password_input = loginVo.getPassword();
-        String password_input_MD5 = MD5.encrypt(password_input);
-        if (password_db.equals(password_input_MD5)) {
-            throw new RqsException(201, "密码错误");
+        String password_input = MD5.encrypt(loginVo.getPassword());
+        if (!password_db.equals(password_input)) {
+            throw new RqsException(201,"密码错误");
         }
-        //5.判断用户是否被禁用  1:可用 0:禁用
+        //5 判断用户是否被禁用  1 可用 0 禁用
         Integer status = sysUser.getStatus();
         if (status.intValue() == 0) {
             throw new RqsException(201, "用户已被禁止使用");
         }
-        //6.使用jwt根据用户id和用户名称生成token字符串
-        String token = JwtHelper.createToken(sysUser.getId(), sysUser.getPassword());
-        //7.返回
-        Map<String ,Object> map =new HashMap<>();
-        map.put("token", token);
-        return Result.ok(token);
+        //6 使用jwt根据用户id和用户名称生成token字符串
+        String token = JwtHelper.createToken(sysUser.getId(), sysUser.getUsername());
+        //7 返回
+        Map<String,Object> map = new HashMap<>();
+        map.put("token",token);
+        return Result.ok(map);
     }
 
     //info
     @GetMapping("info")
     public Result info(HttpServletRequest request) {
-        //1.从请求头获取用户信息（获取请求头token字符串）
+        //1 从请求头获取用户信息（获取请求头token字符串）
         String token = request.getHeader("token");
-        //2.从token字符串中获取用户id或者用户名称
+        //2 从token字符串获取用户id 或者 用户名称
         Long userId = JwtHelper.getUserId(token);
-        //3.根据用户id查询数据库，获取用户信息
+        //3 根据用户id查询数据库，把用户信息获取出来
         SysUser sysUser = sysUserService.getById(userId);
         //4.根据用户id获取用户可以操作的菜单列表，查询数据库动态构建路由结构，进行最终的显示
-        List<RouterVo> routerList = sysMenuService.finUserMenuListByUserId(userId);
-        //5.根据用户id获取用户可以操作的按钮列表
+        List<RouterVo> routerList = sysMenuService.findUserMenuListByUserId(userId);
+        //5 根据用户id获取用户可以操作按钮列表
         List<String> permsList = sysMenuService.findUserPermsByUserId(userId);
-        //6.返回数据
-        //{"code":20000,"data":{"roles":["admin"],"introduction":"I am a super administrator","avatar":"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif","name":"Super Admin"}}
+
+        //6 返回相应的数据
         Map<String, Object> map = new HashMap<>();
-        map.put("roles", "[admin]");
+        map.put("roles","[admin]");
+        map.put("name",sysUser.getName());
         map.put("introduction", "I am a super administrator");
-        map.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-        map.put("name", sysUser.getName());
-        //返回用户可以操作的菜单
-        map.put("routers", routerList);
-        //返回用户可以操作的按钮
-        map.put("buttons", permsList);
+        map.put("avatar","https://oss.aliyuncs.com/aliyun_id_photo_bucket/default_handsome.jpg");
+        //返回用户可以操作菜单
+        map.put("routers",routerList);
+        //返回用户可以操作按钮
+        map.put("buttons",permsList);
         return Result.ok(map);
     }
 
-    //logout
     @PostMapping("logout")
-    public Result logout() {
-
+    public Result logout(){
         return Result.ok();
     }
-
 }
