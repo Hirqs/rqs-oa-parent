@@ -1,6 +1,7 @@
 package com.rqs.auth.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.rqs.auth.mapper.SysUserMapper;
 import com.rqs.auth.service.SysUserRoleService;
 import com.rqs.auth.service.SysUserService;
@@ -31,5 +32,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = baseMapper.selectById(id);
         sysUser.setStatus(status);
         baseMapper.updateById(sysUser);
+    }
+
+    @Override
+    public SysUser getByUsername(String username) {
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysUser::getUsername,username);
+        SysUser sysUser = baseMapper.selectOne(wrapper);
+        return sysUser;
     }
 }

@@ -12,8 +12,9 @@
     <artifactId>common</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>service-util</module>
         <module>common-util</module>
+        <module>service-util</module>
+        <module>spring-security</module>
     </modules>
 
     <properties>
