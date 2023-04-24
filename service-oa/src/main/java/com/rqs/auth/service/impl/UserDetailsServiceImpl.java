@@ -5,16 +5,19 @@ import com.rqs.common.exception.RqsException;
 import com.rqs.common.result.ResultCodeEnum;
 import com.rqs.model.system.SysUser;
 import com.rqs.security.custom.CustomUser;
+
+import com.rqs.security.custom.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
 
-@Component
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
@@ -23,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     //获取用户信息 loadUserByUsername()
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysUser sysUser = sysUserService.getByUsername(username);
+        SysUser sysUser = sysUserService.getUserByUserName(username);
         if(null == sysUser) {
             throw new UsernameNotFoundException("用户名不存在！");
         }
